@@ -1,6 +1,6 @@
 import express from "express";
 import async_hooks from "async_hooks";
-import fs from "fs";
+import { Logger } from "./src/lib/logger";
 
 
 const app = express();
@@ -25,9 +25,7 @@ hook.enable();
 
 
 const writeSomething = (phase: any, more: any) => {
-    fs.writeSync(
-        1,
-        `Phase: "${phase}", Exec. Id: ${async_hooks.executionAsyncId()} ${more ? ", " + more : ""
-        }\n`
+    Logger.logToConsole(
+        `Phase: "${phase}", Exec. Id: ${async_hooks.executionAsyncId()} ${more ? ", " + more : ""}`
     );
 };
