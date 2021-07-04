@@ -9,6 +9,6 @@
 
 ## Concerns
 1. With **AsyncResource** the console.log being an async implementation, it can cause infinite recurssion. The problem is any 3rd party npm install can have it, if not our code
-2. With **AsyncLocalStorage** the warnings present in the Troubleshooting section of official documentation
+2. With **AsyncLocalStorage** the warnings present in the Troubleshooting section of [official documentation](https://nodejs.org/docs/latest-v12.x/api/async_hooks.html#async_hooks_troubleshooting)
 
     ![Warning On Node JS doc](assets/images/Warning_ALS.png)
