@@ -12,8 +12,10 @@ export class AsyncResourceHelper {
         AsyncResourceHelper.ResourceContextMap.set(asyncId, data);
     }
 
-    public static getContext(): AsyncResourceType {
-        const asyncId = async_hook.executionAsyncId();
+    public static getContext(asyncId: number | null = null): AsyncResourceType {
+        if (!asyncId) {
+            asyncId = async_hook.executionAsyncId();
+        }
         return AsyncResourceHelper.ResourceContextMap.get(asyncId);
     }
 
