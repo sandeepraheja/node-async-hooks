@@ -10,11 +10,13 @@ export class TestController extends BaseInjectable {
         this.testService = new TestService();
     }
 
-    public testGet() {
+    public testGet(): Promise<boolean> {
+        console.log("GET REQUEST ", this.getDataAsObject())
         return this.testService.callEmptyPromise(this.getDataAsObject());
     }
 
-    public testPost() {
+    public testPost(): Promise<boolean>  {
+        console.log("POST REQUEST ", this.getDataAsObject())
         return this.testService.callPromiseOnTimer(this.getDataAsObject());
     }
 

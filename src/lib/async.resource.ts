@@ -7,10 +7,11 @@ export class AsyncResourceHelper {
 
     static ResourceContextMap = new Map<number, any>();
 
-    public static setContext(data: AsyncResourceType) {
-        const asyncId = async_hook.executionAsyncId();
+    public static setContext(data: AsyncResourceType, asyncId:number = async_hook.executionAsyncId()) {
+        // const asyncId = async_hook.executionAsyncId();
         AsyncResourceHelper.ResourceContextMap.set(asyncId, data);
     }
+
 
     public static getContext(asyncId: number | null = null): AsyncResourceType {
         if (!asyncId) {
@@ -20,6 +21,6 @@ export class AsyncResourceHelper {
     }
 
     public static unsetContext(asyncId: number) {
-        AsyncResourceHelper.unsetContext(asyncId);
+        AsyncResourceHelper.ResourceContextMap.delete(asyncId);
     }
 }

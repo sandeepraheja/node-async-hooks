@@ -1,34 +1,45 @@
-import http from "http";
+// import http from "http";
+const http = require("http")
 
-export class RequestHandler {
+class RequestHandler {
 
     #defaultOptions = {
         hostname: 'localhost',
         port: 3000,
     }
 
-    makeGetRequest(path) {
+    makeGetRequest(path, user, tenant) {
         const options = {
             ...this.#defaultOptions,
             path,
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                user,
+                tenant
+            }
         };
 
         return this.makeHttpRequest(options);
     }
 
 
-    makePostRequest(path, data) {
+    makePostRequest(path, method, data, user, tenant) {
         const options = {
             ...this.#defaultOptions,
             path,
-            method: 'POST'
+            method: method,
+            headers: {
+                user,
+                tenant,
+                'Content-Type': 'application/json'
+            }
         };
 
 
-        const postBody = new TextEncoder().encode(
-            JSON.stringify(data)
-        )
+        // const postBody = new TextEncoder().encode(
+        //     JSON.stringify(data)
+        // )
+        const postBody = JSON.stringify(data)
 
         return this.makeHttpRequest(options, postBody);
     }
@@ -47,7 +58,7 @@ export class RequestHandler {
             })
 
             req.on('error', error => {
-                console.error("While making request, " + path);
+                console.error("While making request, " + options.path);
                 console.error(error);
                 reject(error);
             });
@@ -62,3 +73,5 @@ export class RequestHandler {
 
 
 }
+
+module.exports = RequestHandler

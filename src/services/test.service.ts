@@ -1,6 +1,7 @@
 import { IAppAsyncContext } from "../api.models/async.context";
 import { BaseInjectable } from "../base.injectable";
 import { TestRepository } from "../repositories/test.repository";
+import { Logger } from "../lib/logger";
 
 export class TestService extends BaseInjectable {
 
@@ -13,10 +14,12 @@ export class TestService extends BaseInjectable {
     public callPromiseOnTimer(dataToTest: IAppAsyncContext): Promise<boolean> {
         return new Promise((res, rej) => {
             setTimeout(() => {
+                Logger.logToConsole(this.TenantId)
                 this.compare(dataToTest);
                 return this.testRepository.callPromiseOnTimer(this.getDataAsObject()).then(() => {
                     res(true);
-                });
+                })
+                .catch((err) => rej(err))
             }, 20);
         });
     }
@@ -24,8 +27,11 @@ export class TestService extends BaseInjectable {
     public callEmptyPromise(dataToTest: IAppAsyncContext): Promise<boolean> {
         return new Promise((res, rej) => {
             this.compare(dataToTest);
-            return this.testRepository.callEmptyPromise(this.getDataAsObject()).then(() => {
-                res(true);
+            return this.testRepository.callEmptyPromise(this.getDataAsObject()).then((resp) => {
+                if (resp)
+                    res(true);
+                else
+                    rej(false)
             });
         });
     }

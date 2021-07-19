@@ -10,6 +10,10 @@ export class TestRoutes {
             return this.handlePromise(res, this.getTestController().testGet());
         });
 
+        router.post("/test", this.mwSetContext, (req, res: Response) => {
+            this.handlePromise(res, this.getTestController().testPost());
+        })
+
     }
 
     public static getTestController() {
@@ -17,6 +21,7 @@ export class TestRoutes {
     }
 
     public static handlePromise(res: Response, promise: Promise<boolean>) {
+        
         return promise.then(() => {
             res.status(200).send({ message: "success" });
         }).catch((err) => {
@@ -26,6 +31,7 @@ export class TestRoutes {
 
     public static mwSetContext(req: Request, res: Response, next: NextFunction) {
         AsyncResourceHelper.setContext({ UserId: req.header("user"), TenantId: req.header("tenant") });
+        next()
     }
 
 }
